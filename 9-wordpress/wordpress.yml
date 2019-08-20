@@ -1,7 +1,7 @@
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
-  name: wordpress-front
+  name: wordpress-app-deploy
   labels:
     app: wordpress
     tier: frontend
@@ -19,11 +19,11 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: wordpress:4.8-apache
-        name: wordpress
+      - image: wordpress
+        name: wordpress-container
         env:
         - name: WORDPRESS_DB_HOST
-          value: wordpress-mysql
+          value: wordpress-mysql-service
         - name: WORDPRESS_DB_USER
           valueFrom:
             secretKeyRef:
@@ -48,5 +48,5 @@ spec:
       volumes:
       - name: wordpress-volume
         persistentVolumeClaim:
-          claimName: wordpress-local
+          claimName: wordpress-local-pvc
 

@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-local
+  name: mysql-local-pvc
   labels:
     app: wordpress
+    #tier: back-storage
 spec:
   accessModes:
     - ReadWriteOnce

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wordpress-mysql
+  name: wordpress-mysql-deploy
   labels:
     app: wordpress
     tier: mysql
@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - image: mysql:5.7
-        name: mysql
+        name: mysql-container
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
@@ -51,5 +51,5 @@ spec:
       volumes:
       - name: mysql-volume
         persistentVolumeClaim:
-          claimName: mysql-local
+          claimName: mysql-local-pvc
 
