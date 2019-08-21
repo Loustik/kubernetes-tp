@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: wordpress-local-pvc
+  namespace: app-wordpress
   labels:
     app: wordpress
     #tier: back-storage
