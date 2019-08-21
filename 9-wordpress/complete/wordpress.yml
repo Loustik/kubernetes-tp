@@ -1,7 +1,21 @@
 apiVersion: v1
+<<<<<<< HEAD
 kind: Secret
 metadata:
   name: wordpress-secrets
+=======
+kind: Namespace
+metadata:
+  name: app-wordpress
+  labels:
+    app: app-wordpress
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: wordpress-secrets
+  namespace: app-wordpress
+>>>>>>> 3f1c09df71a2474d9c6e42ff37237ea491695b5f
   labels:
     app: wordpress
 type: Opaque
@@ -18,6 +32,10 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-local
+<<<<<<< HEAD
+=======
+  namespace: app-wordpress
+>>>>>>> 3f1c09df71a2474d9c6e42ff37237ea491695b5f
   labels:
     app: wordpress
 spec:
@@ -31,11 +49,19 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: wordpress-local
+<<<<<<< HEAD
+=======
+  namespace: app-wordpress
+>>>>>>> 3f1c09df71a2474d9c6e42ff37237ea491695b5f
   labels:
     app: wordpress
 spec:
   accessModes:
+<<<<<<< HEAD
     - ReadWriteOnce
+=======
+    - ReadWriteMany
+>>>>>>> 3f1c09df71a2474d9c6e42ff37237ea491695b5f
   resources:
     requests:
       storage: 10Gi
@@ -44,6 +70,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress-mysql
+<<<<<<< HEAD
+=======
+  namespace: app-wordpress
+>>>>>>> 3f1c09df71a2474d9c6e42ff37237ea491695b5f
   labels:
     app: wordpress
     tier: mysql
@@ -99,6 +129,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress-mysql
+<<<<<<< HEAD
+=======
+  namespace: app-wordpress
+>>>>>>> 3f1c09df71a2474d9c6e42ff37237ea491695b5f
   labels:
     app: wordpress
     tier: mysql
@@ -110,6 +144,7 @@ spec:
     tier: mysql
   clusterIP: None
 ---
+<<<<<<< HEAD
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
@@ -158,10 +193,13 @@ spec:
     tier: backend
   type: NodePort
 ---
+=======
+>>>>>>> 3f1c09df71a2474d9c6e42ff37237ea491695b5f
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
   name: wordpress-front
+  namespace: app-wordpress
   labels:
     app: wordpress
     tier: frontend
@@ -179,7 +217,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: wordpress:4.8-apache
+      - image: wordpress
         name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
@@ -214,6 +252,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress-service
+<<<<<<< HEAD
+=======
+  namespace: app-wordpress
+>>>>>>> 3f1c09df71a2474d9c6e42ff37237ea491695b5f
   labels:
     app: wordpress
     tier: frontend
@@ -227,3 +269,56 @@ spec:
     app: wordpress
     tier: frontend
   type: NodePort
+<<<<<<< HEAD
+=======
+---
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: wordpress-back
+  namespace: app-wordpress
+  labels:
+    app: wordpress
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: backend
+    spec:
+      containers:
+      - image: nazarpc/phpmyadmin
+        name: phpmyadmin
+        env:
+        - name: MYSQL_HOST
+          value: wordpress-mysql
+        ports:
+        - containerPort: 80
+          name: phpmyadmin-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin-service
+  namespace: app-wordpress
+  labels:
+    app: wordpress
+    tier: backend
+spec:
+  ports:
+  - port: 32000
+    nodePort: 32000
+    targetPort: phpmyadmin-port
+    protocol: TCP
+  selector:
+    app: wordpress
+    tier: backend
+  type: NodePort
+>>>>>>> 3f1c09df71a2474d9c6e42ff37237ea491695b5f
